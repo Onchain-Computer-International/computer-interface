@@ -80,7 +80,7 @@ const LoadingScreen: React.FC = () => {
   return (
     <div className="h-full bg-black text-gray-200 font-mono p-4 overflow-y-auto whitespace-pre">
       {showSpeechBubble && (
-        <SpeechBubble text="Good ol' computer booting..." />
+        <SpeechBubble text="I think those are the sounds of an old HDD..." />
       )}
       {bootText.map((text, index) => (
         <div key={index} className="text-sm">

@@ -50,24 +50,25 @@ export default function RetroFrame({ children }: RetroFrameProps) {
   }, [windowManager]);
 
   return (
-    <div className={`fixed inset-0 flex items-center justify-center bg-gray-800 p-4 sm:p-6 
+    <div className={`fixed inset-0 flex items-center justify-center bg-[#2c3e50] p-4 sm:p-6 
                      ${isFullscreen ? 'p-0' : ''}`}>
-      {/* Add Snowfall effect */}
+      {/* Update Snowfall to be more subtle */}
       <Snowfall 
         color="#ffffff"
-        snowflakeCount={200}
+        snowflakeCount={100}
         style={{
           position: 'fixed',
           width: '100%',
           height: '100%',
-          zIndex: 0
+          zIndex: 0,
+          opacity: 0.5
         }}
       />
       
       {/* Update Speech Bubble to use random text */}
       <SpeechBubble text={randomText} />
       
-      {/* Main computer case wrapper */}
+      {/* Main computer case wrapper - adjusted perspective */}
       <div className={`relative w-[95%] max-w-5xl h-[85%] 
                       transform perspective-[2000px] rotate-y-[-3deg] rotate-x-[2deg]
                       ${isFullscreen ? 'w-full max-w-none h-full !rotate-y-0 !rotate-x-0' : ''}`}>
@@ -112,69 +113,72 @@ export default function RetroFrame({ children }: RetroFrameProps) {
           {/* Add Fullscreen button */}
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="absolute top-3 right-12 text-[#605850] text-xs hover:text-[#403830] z-10"
+            className="absolute top-3 right-12 text-[#4a4236] text-xs 
+                     hover:text-[#2a2216] transition-colors z-10"
           >
             {isFullscreen ? '↙' : '↗'}
           </button>
 
-          {/* Top vents */}
+          {/* Top vents - updated color */}
           <div className="absolute top-0 right-16 w-32 h-8 flex gap-2">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex-1">
                 {[...Array(6)].map((_, j) => (
-                  <div key={j} className="w-full h-[2px] bg-[#b8b4ac] mb-1" />
+                  <div key={j} className="w-full h-[2px] bg-[#968c82] mb-1" />
                 ))}
               </div>
             ))}
           </div>
 
-          {/* Simple brand text */}
-          <div className="absolute top-3 left-6 text-[#605850] text-xs">
+          {/* Brand text - updated styling */}
+          <div className="absolute top-3 left-6 text-[#4a4236] text-xs font-bold tracking-wide">
             ONCHAIN COMPUTER
           </div>
 
-          {/* Power LED */}
-          <div className="absolute top-4 right-6 w-2 h-2 rounded-full bg-green-500 
-                        shadow-[0_0_4px_rgba(74,222,128,0.4)]
+          {/* Power LED - enhanced glow */}
+          <div className="absolute top-4 right-6 w-2 h-2 rounded-full bg-green-400 
+                        shadow-[0_0_6px_rgba(74,222,128,0.6),0_0_2px_rgba(74,222,128,1)]
                         animate-pulse" />
 
-          {/* Monitor frame with screen */}
+          {/* Monitor frame - updated border color */}
           <div className="relative w-full h-full rounded-lg p-6
                         border-[12px] border-[#d8d4cc]">
             
-            {/* Screen bezel */}
-            <div className="relative w-full h-full bg-gray-900 rounded-sm 
-                          shadow-[inset_0_0_20px_rgba(0,0,0,0.4)]">
+            {/* Screen bezel - deeper black */}
+            <div className="relative w-full h-full bg-[#121212] rounded-sm 
+                          shadow-[inset_0_0_30px_rgba(0,0,0,0.6)]">
               {/* Content */}
               <div className="relative w-full h-full overflow-hidden rounded-sm" ref={contentRef}>
                 {children}
               </div>
               
-              {/* Screen effects - using z-[9999] for maximum priority */}
+              {/* Enhanced screen effects */}
               <div className="absolute inset-0 pointer-events-none rounded-sm z-[9999]">
-                <div className="absolute inset-0 bg-scan-lines opacity-30" />
-                <div className="absolute inset-0 bg-crt-curve opacity-90" />
+                <div className="absolute inset-0 bg-scan-lines opacity-40" />
+                <div className="absolute inset-0 bg-crt-curve opacity-95" />
               </div>
             </div>
           </div>
 
-          {/* Simple control buttons */}
+          {/* Control buttons - updated styling */}
           <div className="absolute bottom-0 right-6 flex gap-3">
             {['BRIGHT', 'CONTRAST', 'VOLUME'].map((label) => (
               <div key={label} className="flex flex-col items-center gap-1">
-                <div className="w-3 h-3 rounded-full bg-[#ccc8c0] 
-                              shadow-[inset_0_1px_1px_rgba(0,0,0,0.1)]" />
-                <span className="text-[#605850] text-[8px]">{label}</span>
+                <div className="w-3 h-3 rounded-full bg-[#b4aa9f] 
+                              shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]" />
+                <span className="text-[#4a4236] text-[8px] font-medium">{label}</span>
               </div>
             ))}
           </div>
 
-          {/* Alpha sign */}
-          <div className="absolute bottom-2 left-6 text-red-500 text-xl font-['Comic_Sans_MS'] transform -rotate-12">
+          {/* Alpha sign - updated styling */}
+          <div className="absolute bottom-2 left-6 text-red-600 text-xl 
+                         font-['Comic_Sans_MS'] transform -rotate-12
+                         opacity-80">
             Alpha
           </div>
 
-          {/* Model name plate */}
+          {/* Model name plate - enhanced styling */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 
                          bg-[#c8c4bc]
                          text-[#605850] text-[10px] font-bold tracking-wider
