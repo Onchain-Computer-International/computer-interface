@@ -35,6 +35,7 @@ module.exports = {
         'color-shift': 'color-shift 400ms ease-out',
         'color-shift-delayed': 'color-shift 400ms ease-out 50ms',
         'phosphor': 'phosphor 1.2s ease-out',
+        'fade-in-up': 'fade-in-up 0.3s ease-out forwards',
       },
       keyframes: {
         slideUp: {
@@ -80,6 +81,16 @@ module.exports = {
           '0%': { opacity: '1', transform: 'scale(1)' },
           '50%': { opacity: '0.5', transform: 'scale(1.1)' },
           '100%': { opacity: '0', transform: 'scale(1.2)' },
+        },
+        'fade-in-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(10px) translateX(-50%)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0) translateX(-50%)'
+          },
         },
       },
       fontSize: {

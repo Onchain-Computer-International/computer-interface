@@ -1,10 +1,16 @@
 import React from 'react';
 import { playHDDSound } from './Sounds';
+import SpeechBubble from './SpeechBubble';
 
 const LoadingScreen: React.FC = () => {
   const [bootText, setBootText] = React.useState<string[]>([]);
+  const [showSpeechBubble, setShowSpeechBubble] = React.useState(false);
 
   React.useEffect(() => {
+    const speechTimer = setTimeout(() => {
+      setShowSpeechBubble(true);
+    }, 2000);
+
     const bootSequence = [
       "Kickstart 1.3 37.175",
       "CPU: Motorola 68000 @ 7.16MHz",
@@ -67,11 +73,15 @@ const LoadingScreen: React.FC = () => {
     return () => {
       isRunning = false;
       clearInterval(hddInterval);
+      clearTimeout(speechTimer);
     };
   }, []);
 
   return (
     <div className="h-full bg-black text-gray-200 font-mono p-4 overflow-y-auto whitespace-pre">
+      {showSpeechBubble && (
+        <SpeechBubble text="Good ol' computer booting..." />
+      )}
       {bootText.map((text, index) => (
         <div key={index} className="text-sm">
           {text.startsWith('[') 

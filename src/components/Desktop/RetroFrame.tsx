@@ -1,9 +1,23 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { useWindowManager } from '../../hooks/useWindowManager';
 import { atom, useAtom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
+import Snowfall from 'react-snowfall';
+import SpeechBubble from './SpeechBubble';
 
 const isFullscreenAtom = atomWithStorage('isFullscreen', false);
+
+// Add array of possible speech bubble texts
+const speechBubbleTexts = [
+  "I've waited a long time for this...",
+  "Booting up the nostalgia drive...",
+  "I love my new computer!",
+  "I'm so excited to use this!",
+  "I never thought I'd see the day!",
+  "So this is what raz was talking about?",
+  "I'm afraid of the power of this thing...",
+  "I'm afraid this may cause extreme satisfaction..."
+];
 
 interface RetroFrameProps {
   children: React.ReactNode;
@@ -13,6 +27,12 @@ export default function RetroFrame({ children }: RetroFrameProps) {
   const [isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const contentRef = useRef<HTMLDivElement>(null);
   const windowManager = useWindowManager();
+
+  // Memoize the random text so it doesn't change on re-renders
+  const randomText = useMemo(() => 
+    speechBubbleTexts[Math.floor(Math.random() * speechBubbleTexts.length)],
+    [] // Empty dependency array means this only runs once
+  );
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
@@ -32,6 +52,21 @@ export default function RetroFrame({ children }: RetroFrameProps) {
   return (
     <div className={`fixed inset-0 flex items-center justify-center bg-gray-800 p-4 sm:p-6 
                      ${isFullscreen ? 'p-0' : ''}`}>
+      {/* Add Snowfall effect */}
+      <Snowfall 
+        color="#ffffff"
+        snowflakeCount={200}
+        style={{
+          position: 'fixed',
+          width: '100%',
+          height: '100%',
+          zIndex: 0
+        }}
+      />
+      
+      {/* Update Speech Bubble to use random text */}
+      <SpeechBubble text={randomText} />
+      
       {/* Main computer case wrapper */}
       <div className={`relative w-[95%] max-w-5xl h-[85%] 
                       transform perspective-[2000px] rotate-y-[-3deg] rotate-x-[2deg]
@@ -133,12 +168,21 @@ export default function RetroFrame({ children }: RetroFrameProps) {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Simple stand */}
-        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 
-                      w-[30%] h-6 bg-[#dcd8d0]
-                      rounded-b-lg" />
+          {/* Alpha sign */}
+          <div className="absolute bottom-2 left-6 text-red-500 text-xl font-['Comic_Sans_MS'] transform -rotate-12">
+            Alpha
+          </div>
+
+          {/* Model name plate */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 
+                         bg-[#c8c4bc]
+                         text-[#605850] text-[10px] font-bold tracking-wider
+                         border border-[#a8a4a0] rounded-sm z-[10]
+                         shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]">
+            VIRTUOSA 1000
+          </div>
+        </div>
       </div>
     </div>
   );

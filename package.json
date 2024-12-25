@@ -16,7 +16,9 @@
     "jotai": "^2.10.3",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
+    "react-chat-bubble": "^0.8.7",
     "react-dom": "^18.3.1",
+    "react-snowfall": "^2.2.0",
     "siwe": "^2.3.2",
     "wagmi": "^2.14.1",
     "web3": "^4.5.0"

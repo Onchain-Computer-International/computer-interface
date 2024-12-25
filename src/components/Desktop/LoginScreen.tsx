@@ -86,7 +86,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
           </svg>
           <div>
             <p className="font-[Press_Start_2P] text-white mb-4 text-sm">Connect your Ethereum Wallet</p>
-            <p className="text-xs text-[#666] font-[Press_Start_2P] leading-[1.8]">Sign a message with MetaMask to access your Onchain Computer.</p>
+            <p className="text-xs text-[#666] font-[Press_Start_2P] leading-[1.8]">Sign a message with your wallet to access your Onchain Computer.</p>
           </div>
         </div>
 
