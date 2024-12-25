@@ -16,6 +16,9 @@ const speechBubbleTexts = [
   "I never thought I'd see the day!",
   "So this is what raz was talking about?",
   "I'm afraid of the power of this thing...",
+  "Does the terminal actually work?",
+  "I'm stuck enjoying the tunes...",
+  "I like the noise when you type. It's cool when you pay attention to the little things.",
   "I'm afraid this may cause extreme satisfaction..."
 ];
 
