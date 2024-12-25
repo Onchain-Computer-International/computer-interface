@@ -15,9 +15,7 @@ export const login = async (
       throw new Error('Address is required for login');
     }
 
-    const nonceRes = await fetch(`${API_BASE_URL}/api/siwe/nonce`, {
-      credentials: 'include'
-    });
+    const nonceRes = await fetch(`${API_BASE_URL}/api/siwe/nonce`);
     const { nonce } = await nonceRes.json();
 
     const checksummedAddress = getAddress(address);
@@ -40,14 +38,16 @@ export const login = async (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message, signature }),
-      credentials: 'include'
+      body: JSON.stringify({ message, signature })
     });
 
     if (!verifyRes.ok) {
       const errorText = await verifyRes.text();
       throw new Error(`Verification failed: ${errorText}`);
     }
+
+    const { token, user } = await verifyRes.json();
+    localStorage.setItem('auth_token', token);
 
     return true;
   } catch (error) {
@@ -64,16 +64,7 @@ export const login = async (
 };
 
 export const logout = async (socket: WebSocket | null) => {
-  try {
-    await fetch(`${API_BASE_URL}/api/siwe/logout`, {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    if (socket) {
-      socket.close();
-    }
-  } catch (error) {
-    console.error('Logout failed:', error);
+  if (socket) {
+    socket.close();
   }
 }; 
