@@ -22,7 +22,22 @@ export function useWebSocket(isAuthenticated: boolean) {
       setSocket(ws);
 
       ws.onmessage = (event) => {
-        console.log('WebSocket received message:', event.data);
+        try {
+          const message = JSON.parse(event.data);
+          // Log parsed message instead of raw data
+          console.log('WebSocket received message:', message);
+          
+          // Validate message structure before processing
+          if (!message || typeof message !== 'object') {
+            console.warn('Invalid message format received');
+            return;
+          }
+          
+          // Add your message handling logic here
+          
+        } catch (error) {
+          console.error('Error processing WebSocket message:', error);
+        }
       };
 
       ws.onopen = () => {
