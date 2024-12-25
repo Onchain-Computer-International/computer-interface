@@ -1,17 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../Provider';
-
-type Command = {
-  id?: string;
-  input: string;
-  output?: string;
-  messageId?: string;
-  timestamp?: string;
-};
+import { useAtom } from 'jotai';
+import { terminalCommandsAtom } from './terminalAtoms';
 
 export default function Terminal() {
   const { socket } = useContext(AuthContext);
-  const [commands, setCommands] = useState<Command[]>([]);
+  const [commands, setCommands] = useAtom(terminalCommandsAtom);
   const [currentInput, setCurrentInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,7 +33,7 @@ export default function Terminal() {
     return () => {
       socket.removeEventListener('message', handleTerminalUpdate);
     };
-  }, [socket]);
+  }, [socket, setCommands]);
 
   const handleCommand = (input: string) => {
     const timestamp = new Date().toISOString();

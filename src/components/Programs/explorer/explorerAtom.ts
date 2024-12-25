@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 export type ExplorerItem = {
   address: string;
@@ -15,4 +15,4 @@ export type ExplorerItem = {
   holdingPeriod: number;
 };
 
-export const explorerAtom = atom<ExplorerItem[]>([]); 
+export const explorerAtom = atomWithStorage<ExplorerItem[]>('explorer-data', []); 
