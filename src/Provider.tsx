@@ -8,6 +8,7 @@ import { coinbaseWallet, injected, safe } from "wagmi/connectors";
 import { useWebSocket } from './WebSocket';
 import { login as authLogin, logout as authLogout } from './Authentication';
 import { API_BASE_URL } from './config';
+import { useWebSocketMessages } from './state/websocketState';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const socket = useWebSocket(isAuthenticated);
+  useWebSocketMessages(socket);
 
   // Check session status on mount
   useEffect(() => {

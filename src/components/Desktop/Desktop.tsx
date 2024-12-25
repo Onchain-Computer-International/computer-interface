@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Window from './Window';
 import TaskBar from './TaskBar';
 import StartMenu from './StartMenu';
 import { useWindowManager } from '../../hooks/useWindowManager';
 import { getPrograms } from './_registry';
 import type { Socket } from 'socket.io-client';
+import { AuthContext } from '../../Provider';
+import { useAtom } from 'jotai';
+import { onlineUsersAtom } from '../../state/websocketState';
 
 export interface Program {
   id: string;
@@ -19,6 +22,8 @@ export default function Desktop() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const windowManager = useWindowManager();
   const [programs] = useState<Program[]>(() => getPrograms());
+  const [onlineUsers] = useAtom(onlineUsersAtom);
+  const { socket } = useContext(AuthContext);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -93,6 +98,7 @@ export default function Desktop() {
           onStartClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
           currentTime={currentTime}
           windowStates={windowManager.windowStates}
+          onlineUsers={onlineUsers}
         />
         
         <StartMenu 

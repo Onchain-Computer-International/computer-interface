@@ -51,7 +51,10 @@ export default function Explorer() {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({
         type: 'search-holders',
-        params: searchParams
+        searchParams: {
+          ...searchParams,
+          query: searchParams.query || '*'
+        }
       }));
     }
   };

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Program } from './Desktop';
+import { FaUser } from 'react-icons/fa';
 
 type TaskBarProps = {
   programs: Program[];
@@ -9,6 +10,7 @@ type TaskBarProps = {
   currentTime: Date;
   windowStates: Record<string, WindowState>;
   onProgramDoubleClick: (id: string) => void;
+  onlineUsers: number;
 };
 
 export default function TaskBar({ 
@@ -18,7 +20,8 @@ export default function TaskBar({
   onStartClick,
   currentTime,
   windowStates,
-  onProgramDoubleClick 
+  onProgramDoubleClick,
+  onlineUsers
 }: TaskBarProps) {
   return (
     <div className="absolute bottom-0 left-0 right-0 h-12 bg-[#0055aa] border-t-2 border-b-2 border-white flex items-center px-1 z-50">
@@ -47,8 +50,14 @@ export default function TaskBar({
           )
         ))}
       </div>
-      <div className="px-4 py-1 text-white font-bold border-2 border-white h-8 flex items-center">
-        {currentTime.toLocaleTimeString()}
+      <div className="flex items-center space-x-2">
+        <div className="px-4 py-1 text-white font-bold border-2 border-white h-8 flex items-center">
+          {currentTime.toLocaleTimeString()}
+        </div>
+        <div className="px-4 py-1 text-white font-bold border-2 border-white h-8 flex items-center space-x-2">
+          <FaUser />
+          <span>{onlineUsers}</span>
+        </div>
       </div>
     </div>
   );
