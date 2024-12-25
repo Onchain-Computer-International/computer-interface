@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { X, Minus, Square } from 'lucide-react';
 import type { WindowState } from '../../hooks/useWindowManager';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type WindowProps = {
   id: string;
@@ -224,8 +224,6 @@ export default function Window({
     };
   }, [isResizing, resizeDirection, resizeStartPos, initialSize, windowState, updatePosition, updateSize, tempPosition]);
 
-  if (windowState.isMinimized) return null;
-
   const windowStyle = windowState.isMaximized
     ? {
         left: 0,
@@ -243,62 +241,67 @@ export default function Window({
       };
 
   return (
-    <>
+    <motion.div
+      ref={windowRef}
+      className="absolute bg-[#dedede] shadow-[2px_2px_0px_#000000] border-2 border-black overflow-hidden flex flex-col"
+      style={{
+        ...windowStyle,
+        zIndex: windowState.zIndex,
+        cursor: isResizing ? `${resizeDirection}-resize` : 'default',
+      }}
+      onClick={onFocus}
+      animate={{
+        scale: windowState.isMinimized ? 0.1 : 1,
+        opacity: windowState.isMinimized ? 0 : 1,
+        x: windowState.isMinimized ? window.innerWidth / 2 : 0,
+        y: windowState.isMinimized ? window.innerHeight - 48 : 0,
+      }}
+      transition={{ duration: 0.2 }}
+    >
       <div
-        ref={windowRef}
-        className="absolute bg-[#dedede] shadow-[2px_2px_0px_#000000] border-2 border-black overflow-hidden flex flex-col"
-        style={{
-          ...windowStyle,
-          zIndex: windowState.zIndex,
-          cursor: isResizing ? `${resizeDirection}-resize` : 'default',
-        }}
-        onClick={onFocus}
+        className="flex items-center justify-between h-[24px] px-1 bg-[#0055aa] text-white cursor-move flex-shrink-0 relative no-select"
+        onMouseDown={handleMouseDown}
+        onDoubleClick={onMaximize}
       >
-        <div
-          className="flex items-center justify-between h-[24px] px-1 bg-[#0055aa] text-white cursor-move flex-shrink-0 relative no-select"
-          onMouseDown={handleMouseDown}
-          onDoubleClick={onMaximize}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#ffffff33] to-transparent bg-[length:4px_100%] no-select" />
-          
-          <div className="flex items-center space-x-2 z-10 no-select">
-            {icon}
-            <span className="text-sm font-bold no-select">{title}</span>
-          </div>
-          <div className="flex space-x-1 z-10 no-select">
-            <button 
-              className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
-              onClick={onMinimize}
-            >
-              <Minus className="w-3 h-3" />
-            </button>
-            <button 
-              className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
-              onClick={onMaximize}
-            >
-              <Square className="w-3 h-3" />
-            </button>
-            <button
-              className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
-              onClick={onClose}
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#ffffff33] to-transparent bg-[length:4px_100%] no-select" />
+        
+        <div className="flex items-center space-x-2 z-10 no-select">
+          {icon}
+          <span className="text-sm font-bold no-select">{title}</span>
         </div>
-        <div className="flex-1 overflow-hidden relative">
-          {children}
-          {!windowState.isMaximized && (
-            <>
-              <div className="absolute bottom-0 left-0 w-full h-1 cursor-s-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 's')} />
-              <div className="absolute top-0 left-0 h-full w-1 cursor-w-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'w')} />
-              <div className="absolute top-0 right-0 h-full w-1 cursor-e-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'e')} />
-              <div className="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'sw')} />
-              <div className="absolute bottom-0 right-0 w-2 h-2 cursor-se-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'se')} />
-            </>
-          )}
+        <div className="flex space-x-1 z-10 no-select">
+          <button 
+            className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
+            onClick={onMinimize}
+          >
+            <Minus className="w-3 h-3" />
+          </button>
+          <button 
+            className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
+            onClick={onMaximize}
+          >
+            <Square className="w-3 h-3" />
+          </button>
+          <button
+            className="w-[18px] h-[18px] flex items-center justify-center bg-[#dedede] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#000000] hover:bg-[#cccccc] text-black no-select"
+            onClick={onClose}
+          >
+            <X className="w-3 h-3" />
+          </button>
         </div>
       </div>
-    </>
+      <div className="flex-1 overflow-hidden relative">
+        {children}
+        {!windowState.isMaximized && (
+          <>
+            <div className="absolute bottom-0 left-0 w-full h-1 cursor-s-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 's')} />
+            <div className="absolute top-0 left-0 h-full w-1 cursor-w-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'w')} />
+            <div className="absolute top-0 right-0 h-full w-1 cursor-e-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'e')} />
+            <div className="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'sw')} />
+            <div className="absolute bottom-0 right-0 w-2 h-2 cursor-se-resize no-select" onMouseDown={(e) => handleResizeMouseDown(e, 'se')} />
+          </>
+        )}
+      </div>
+    </motion.div>
   );
 }
