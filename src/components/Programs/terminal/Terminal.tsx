@@ -20,11 +20,17 @@ export default function Terminal() {
     if (!socket) return;
 
     const handleTerminalUpdate = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
+      console.log('Received event:', event.data);
+      const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      console.log('Parsed data:', data);
       if (data.type === 'terminal-update') {
-        setCommands(prev => prev.map(cmd => 
-          cmd.id === data.command.id ? data.command : cmd
-        ));
+        console.log('Updating command:', data.command);
+        setCommands(prev => {
+          console.log('Previous commands:', prev);
+          return prev.map(cmd => 
+            cmd.id === data.command.id ? { ...data.command } : cmd
+          );
+        });
       }
     };
 

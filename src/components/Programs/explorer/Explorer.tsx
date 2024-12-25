@@ -24,6 +24,7 @@ export default function Explorer() {
   });
   const [total, setTotal] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [lastIndexedBlock, setLastIndexedBlock] = useState<number>(0);
 
   useEffect(() => {
     if (!socket) return;
@@ -34,6 +35,7 @@ export default function Explorer() {
         if (response.data.success) {
           setHolders(response.data.holders);
           setTotal(response.data.total);
+          setLastIndexedBlock(response.data.lastIndexedBlock);
         } else {
           console.error('Search failed:', response.data.error);
         }
@@ -80,7 +82,7 @@ export default function Explorer() {
     { field: 'volumeSent', label: 'Sent', sortable: true },
     { field: 'volumeReceived', label: 'Recv', sortable: true },
     { field: 'holdingPeriod', label: 'Hold', sortable: true },
-    { field: 'lastActiveBlock', label: 'Last', sortable: true }
+    { field: 'lastActiveBlock', label: 'Active', sortable: true }
   ];
 
   // Format value based on field type
@@ -108,14 +110,26 @@ export default function Explorer() {
         return txNum.toString();
       
       case 'holdingPeriod':
-        const blocks = Number(value);
-        if (blocks >= 1e6) return `${(blocks / 1e6).toFixed(1)}M`;
-        if (blocks >= 1e3) return `${(blocks / 1e3).toFixed(1)}K`;
-        return blocks.toString();
+        const seconds = Number(value) * 2;
+        if (seconds < 60) return `${Math.floor(seconds)}s`;
+        if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+        return `${Math.floor(seconds / 86400)}d`;
       
       case 'lastActiveBlock':
-      case 'firstActiveBlock':
-        return `#${Number(value).toLocaleString()}`;
+        const lastActiveSecondsAgo = (lastIndexedBlock - Number(value)) * 2;
+        const lastActiveDays = Math.floor(lastActiveSecondsAgo / 86400);
+        const lastActiveHours = Math.floor((lastActiveSecondsAgo % 86400) / 3600);
+        const lastActiveMinutes = Math.floor((lastActiveSecondsAgo % 3600) / 60);
+        const lastActiveSeconds = Math.floor(lastActiveSecondsAgo % 60);
+        
+        let lastActiveTimeString = '';
+        if (lastActiveDays > 0) lastActiveTimeString += `${lastActiveDays}d `;
+        if (lastActiveHours > 0) lastActiveTimeString += `${lastActiveHours}h `;
+        if (lastActiveMinutes > 0) lastActiveTimeString += `${lastActiveMinutes}m `;
+        if (lastActiveSeconds > 0) lastActiveTimeString += `${lastActiveSeconds}s`;
+        
+        return `${lastActiveTimeString.trim()}`;
       
       case 'address':
         return `${value.slice(0, 4)}..${value.slice(-3)}`;
@@ -141,6 +155,36 @@ export default function Explorer() {
       case 'address':
         // Show full address on hover
         return value;
+      
+      case 'lastActiveBlock':
+        const lastActiveSecondsAgo = (lastIndexedBlock - Number(value)) * 2;
+        const lastActiveDays = Math.floor(lastActiveSecondsAgo / 86400);
+        const lastActiveHours = Math.floor((lastActiveSecondsAgo % 86400) / 3600);
+        const lastActiveMinutes = Math.floor((lastActiveSecondsAgo % 3600) / 60);
+        const lastActiveSeconds = Math.floor(lastActiveSecondsAgo % 60);
+        
+        let lastActiveTimeString = '';
+        if (lastActiveDays > 0) lastActiveTimeString += `${lastActiveDays}d `;
+        if (lastActiveHours > 0) lastActiveTimeString += `${lastActiveHours}h `;
+        if (lastActiveMinutes > 0) lastActiveTimeString += `${lastActiveMinutes}m `;
+        if (lastActiveSeconds > 0) lastActiveTimeString += `${lastActiveSeconds}s`;
+        
+        return `${lastActiveTimeString.trim()} ago (Block #${value})`;
+      
+      case 'holdingPeriod':
+        const holdingSeconds = Number(value) * 2;
+        const holdingDays = Math.floor(holdingSeconds / 86400);
+        const holdingHours = Math.floor((holdingSeconds % 86400) / 3600);
+        const holdingMinutes = Math.floor((holdingSeconds % 3600) / 60);
+        const holdingRemainingSeconds = Math.floor(holdingSeconds % 60);
+        
+        let holdingTimeString = '';
+        if (holdingDays > 0) holdingTimeString += `${holdingDays}d `;
+        if (holdingHours > 0) holdingTimeString += `${holdingHours}h `;
+        if (holdingMinutes > 0) holdingTimeString += `${holdingMinutes}m `;
+        if (holdingRemainingSeconds > 0) holdingTimeString += `${holdingRemainingSeconds}s`;
+        
+        return `${holdingTimeString.trim()} (${value} blocks)`;
       
       default:
         return null;

@@ -8,9 +8,15 @@ export function useWebSocket(isAuthenticated: boolean) {
     let ws: WebSocket | null = null;
 
     if (isAuthenticated) {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        console.error('No auth token found for WebSocket connection');
+        return;
+      }
+
       const domain = new URL(API_BASE_URL).host;
       const wsUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${domain}/connect`;
-      ws = new WebSocket(wsUrl);
+      ws = new WebSocket(wsUrl, [token]);
 
       // Set socket immediately so message handlers can be attached
       setSocket(ws);
