@@ -6,7 +6,7 @@ interface SpeechBubbleProps {
   duration?: number;
 }
 
-export default function SpeechBubble({ text, duration = 3000 }: SpeechBubbleProps) {
+export default function SpeechBubble({ text, duration = 4500 }: SpeechBubbleProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
