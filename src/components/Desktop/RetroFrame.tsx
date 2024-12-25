@@ -18,6 +18,8 @@ const speechBubbleTexts = [
   "I'm afraid of the power of this thing...",
   "Does the terminal actually work?",
   "I'm stuck enjoying the tunes...",
+  "The dev is deving...",
+  "Onchain go boomy again boi",
   "I like the noise when you type. It's cool when you pay attention to the little things.",
   "I'm afraid this may cause extreme satisfaction..."
 ];
