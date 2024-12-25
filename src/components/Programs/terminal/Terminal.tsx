@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../Provider';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { terminalCommandsAtom } from './terminalAtoms';
 
 export default function Terminal() {
@@ -67,12 +67,26 @@ export default function Terminal() {
     return !!lastCommand.output;
   };
 
+  const handleReset = () => {
+    setCommands([]);
+  };
+
   return (
     <div 
       ref={containerRef}
-      className="h-full bg-[#0055aa] text-[#ffffff] font-['Topaz'] p-2 overflow-auto border-2 border-[#ffffff]"
+      className="h-full bg-[#0055aa] text-[#ffffff] font-['Topaz'] p-2 overflow-auto border-2 border-[#ffffff] relative"
       onClick={() => inputRef.current?.focus()}
     >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleReset();
+        }}
+        className="absolute top-2 right-2 bg-[#ffffff] text-[#0055aa] px-1 text-[0.6rem] font-['Topaz'] 
+        border border-[#0055aa] hover:bg-[#dddddd] active:translate-y-[1px]"
+      >
+        RESET
+      </button>
       {commands.map((cmd, i) => (
         <div key={i} className="mb-1">
           <div className="flex items-center text-[0.7rem] font-mono">
