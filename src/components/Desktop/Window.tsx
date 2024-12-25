@@ -72,6 +72,12 @@ export default function Window({
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging && !windowState.isMaximized) {
+        const activeElement = document.activeElement;
+        if (activeElement?.tagName === 'IFRAME') {
+          setIsDragging(false);
+          return;
+        }
+
         requestAnimationFrame(() => {
           const newX = e.clientX - dragOffset.x;
           const newY = e.clientY - dragOffset.y;
@@ -93,9 +99,26 @@ export default function Window({
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        try {
+          iframe.style.pointerEvents = 'auto';
+        } catch (e) {
+          // Handle potential security errors with cross-origin iframes
+        }
+      });
     };
 
     if (isDragging) {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        try {
+          iframe.style.pointerEvents = 'none';
+        } catch (e) {
+          // Handle potential security errors with cross-origin iframes
+        }
+      });
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
