@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'MS Sans Serif';
+  src: url('https://unpkg.com/@fontsource/ms-sans-serif@4.5.0/files/ms-sans-serif-400.woff2') format('woff2');
+}
+
+.font-win95 {
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.win95-border {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: inset -1px -1px #000000, inset 1px 1px #dfdfdf;
+}
+
+.win95-button {
+  background: #c0c0c0;
+  padding: 4px 16px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  box-shadow: inset -1px -1px #000000, inset 1px 1px #ffffff;
+  position: relative;
+}
+
+.win95-button:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  box-shadow: inset 1px 1px #000000, inset -1px -1px #ffffff;
+}
+
+.win95-input {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  background: #ffffff;
+  padding: 3px 5px;
+}
+
+.win95-window {
+  background: #c0c0c0;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  box-shadow: inset -1px -1px #000000, inset 1px 1px #ffffff;
+}
+
+.win95-titlebar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  padding: 2px 3px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+@font-face {
+  font-family: 'Topaz';
+  src: url('https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/TopazPlus_a1200.ttf') format('truetype');
+}
+
+.amiga-desktop {
+  background: linear-gradient(135deg, #2a4480 0%, #4a64a0 100%);
+}
+
+.amiga-window {
+  background: #707070;
+  border: 2px solid #ffffff;
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.amiga-titlebar {
+  background: linear-gradient(90deg, #0055aa 0%, #3377cc 100%);
+  color: #ffffff;
+  font-family: 'Topaz', monospace;
+  text-transform: uppercase;
+}
+
+.amiga-button {
+  background: #909090;
+  border: 1px solid #ffffff;
+  box-shadow: 1px 1px 0 #000000;
+  color: #000000;
+  font-family: 'Topaz', monospace;
+}
+
+.amiga-icon {
+  background: #909090;
+  border: 1px solid #ffffff;
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.bg-crt-curve {
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.1) 75%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  background-size: 100% 100%;
+  background-position: center;
+  mix-blend-mode: multiply;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
