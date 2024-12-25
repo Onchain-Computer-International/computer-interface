@@ -33,6 +33,7 @@ interface AuthContextType {
   user: any | null;
   socket: WebSocket | null;
   token: string | null;
+  isWebSocketConnected: boolean;
   login: (address: string, chainId: number, signMessage: (args: SignMessageArgs) => Promise<string>) => Promise<boolean>;
   logout: () => Promise<void>;
 }
@@ -42,6 +43,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   socket: null,
   token: null,
+  isWebSocketConnected: false,
   login: async () => false,
   logout: async () => {},
 });
@@ -50,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
   const socket = useWebSocket(isAuthenticated);
   useWebSocketMessages(socket);
 
@@ -61,6 +64,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       checkSession(savedToken);
     }
   }, []);
+
+  // Add WebSocket connection status effect
+  useEffect(() => {
+    if (socket) {
+      const handleOpen = () => setIsWebSocketConnected(true);
+      const handleClose = () => setIsWebSocketConnected(false);
+      const handleError = () => setIsWebSocketConnected(false);
+
+      socket.addEventListener('open', handleOpen);
+      socket.addEventListener('close', handleClose);
+      socket.addEventListener('error', handleError);
+
+      // Set initial state
+      setIsWebSocketConnected(socket.readyState === WebSocket.OPEN);
+
+      return () => {
+        socket.removeEventListener('open', handleOpen);
+        socket.removeEventListener('close', handleClose);
+        socket.removeEventListener('error', handleError);
+      };
+    } else {
+      setIsWebSocketConnected(false);
+    }
+  }, [socket]);
 
   const checkSession = async (authToken: string) => {
     try {
@@ -124,7 +151,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, socket, token, login, logout }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      user, 
+      socket, 
+      token, 
+      isWebSocketConnected,
+      login, 
+      logout 
+    }}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           {children}

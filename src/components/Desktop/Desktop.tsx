@@ -8,6 +8,7 @@ import type { Socket } from 'socket.io-client';
 import { AuthContext } from '../../Provider';
 import { useAtom } from 'jotai';
 import { onlineUsersAtom } from '../../state/websocketState';
+import SpeechBubble from './SpeechBubble';
 
 export interface Program {
   id: string;
@@ -20,10 +21,11 @@ export interface Program {
 export default function Desktop() {
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [disconnectionMessage, setDisconnectionMessage] = useState<string | null>(null);
   const windowManager = useWindowManager();
   const [programs] = useState<Program[]>(() => getPrograms());
   const [onlineUsers] = useAtom(onlineUsersAtom);
-  const { socket } = useContext(AuthContext);
+  const { socket, isWebSocketConnected } = useContext(AuthContext);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,6 +33,23 @@ export default function Desktop() {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isWebSocketConnected) {
+      const messages = [
+        "Oops! I lost my connection to the mothership!",
+        "Hey, who unplugged my internet?",
+        "Looks like the hamsters powering our server need a break!",
+        "Server's gone for a coffee break",
+        "Houston, we have a connection problem!",
+        "BRB, chasing down some loose wires!",
+      ];
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      setDisconnectionMessage(randomMessage);
+    } else {
+      setDisconnectionMessage(null);
+    }
+  }, [isWebSocketConnected]);
 
   const toggleProgram = (id: string) => {
     if (windowManager.openPrograms.includes(id)) {
@@ -42,6 +61,9 @@ export default function Desktop() {
 
   return (
       <div className="relative w-full h-full amiga-desktop">
+        {disconnectionMessage && (
+          <SpeechBubble text={disconnectionMessage} duration={6000} />
+        )}
         <div className="absolute inset-0 overflow-auto">
           <div className="grid grid-cols-4 gap-4 p-4">
             {programs.map((program) => (
@@ -99,6 +121,7 @@ export default function Desktop() {
           currentTime={currentTime}
           windowStates={windowManager.windowStates}
           onlineUsers={onlineUsers}
+          isWebSocketConnected={isWebSocketConnected}
         />
         
         <StartMenu 

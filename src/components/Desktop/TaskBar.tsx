@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Program } from './Desktop';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaWifi, FaBan } from 'react-icons/fa';
+import { WindowState } from '../../hooks/useWindowManager';
 
 type TaskBarProps = {
   programs: Program[];
@@ -11,6 +12,7 @@ type TaskBarProps = {
   windowStates: Record<string, WindowState>;
   onProgramDoubleClick: (id: string) => void;
   onlineUsers: number;
+  isWebSocketConnected: boolean;
 };
 
 export default function TaskBar({ 
@@ -21,7 +23,8 @@ export default function TaskBar({
   currentTime,
   windowStates,
   onProgramDoubleClick,
-  onlineUsers
+  onlineUsers,
+  isWebSocketConnected
 }: TaskBarProps) {
   return (
     <div className="absolute bottom-0 left-0 right-0 h-12 bg-[#0055aa] border-t-2 border-b-2 border-white flex items-center px-1 z-50">
@@ -55,6 +58,7 @@ export default function TaskBar({
           {currentTime.toLocaleTimeString()}
         </div>
         <div className="px-4 py-1 text-white font-bold border-2 border-white h-8 flex items-center space-x-2">
+          {isWebSocketConnected ? <FaWifi className="text-green-400" /> : <FaBan className="text-red-400" />}
           <FaUser />
           <span>{onlineUsers}</span>
         </div>
