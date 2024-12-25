@@ -31,11 +31,11 @@ export default function Explorer() {
     const handleSearchResults = (event: MessageEvent) => {
       const response = JSON.parse(event.data);
       if (response.type === 'holder-search-results') {
-        if (response.success) {
-          setHolders(response.holders);
-          setTotal(response.total);
+        if (response.data.success) {
+          setHolders(response.data.holders);
+          setTotal(response.data.total);
         } else {
-          console.error('Search failed:', response.error);
+          console.error('Search failed:', response.data.error);
         }
       }
     };
