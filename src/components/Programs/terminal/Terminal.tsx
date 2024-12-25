@@ -61,10 +61,10 @@ export default function Terminal() {
   }, [commands]);
 
   const showPrompt = () => {
-    // Only show prompt if there are no commands, or if the last command has an output
+    // Only show prompt if there are no commands, or if the last command has an output (including empty string)
     if (commands.length === 0) return true;
     const lastCommand = commands[commands.length - 1];
-    return !!lastCommand.output;
+    return lastCommand.output !== undefined;
   };
 
   const handleReset = () => {
