@@ -132,6 +132,12 @@ export default function Window({
   useEffect(() => {
     const handleResizeMove = (e: MouseEvent) => {
       if (isResizing && !windowState.isMaximized) {
+        const activeElement = document.activeElement;
+        if (activeElement?.tagName === 'IFRAME') {
+          setIsResizing(false);
+          return;
+        }
+
         const desktopEl = document.querySelector('.amiga-desktop');
         if (!desktopEl) return;
 
@@ -211,9 +217,29 @@ export default function Window({
       }
       setIsResizing(false);
       setResizeDirection(null);
+      
+      // Re-enable iframe pointer events
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        try {
+          iframe.style.pointerEvents = 'auto';
+        } catch (e) {
+          // Handle potential security errors with cross-origin iframes
+        }
+      });
     };
 
     if (isResizing) {
+      // Disable iframe pointer events during resize
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        try {
+          iframe.style.pointerEvents = 'none';
+        } catch (e) {
+          // Handle potential security errors with cross-origin iframes
+        }
+      });
+
       document.addEventListener('mousemove', handleResizeMove);
       document.addEventListener('mouseup', handleResizeUp);
     }
