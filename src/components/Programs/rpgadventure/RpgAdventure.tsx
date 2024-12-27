@@ -1,4 +1,4 @@
-export default function MusicPlayer() {
+export default function RpgAdventure() {
   return (
     <div className="w-full h-full overflow-hidden">
       <iframe 

@@ -1,57 +1,88 @@
-# Onchain Computer - Retro Desktop Environment
+# Virtuosa 1000 Desktop Interface
 
-Welcome to the Onchain Computer, a web application that brings the nostalgia of vintage computing to your browser. This project simulates a retro-style desktop environment with a unique blend of modern web technologies and classic design aesthetics.
+A retro-styled desktop interface built with React, TypeScript, and Tailwind CSS that emulates a classic Amiga-like operating system experience.
 
 ## Features
 
-- **Wallet-Based Authentication**: Securely log in using your Ethereum wallet. The application supports wallet connections and message signing for authentication.
+- Authentic retro desktop environment
+- Realistic sound effects (keyboard, HDD, startup sounds)
+- Draggable and resizable windows
+- Program management system
+- File browser with content viewer
+- Token explorer with real-time data
+- System logs viewer
+- Web3 authentication
+- WebSocket real-time connectivity
+
+## Core Components
+
+### Desktop Environment
+- Window management system with z-index handling
+- Start menu with program launcher
+- Taskbar with active program tracking
+- CRT screen effects and animations
+
+### Authentication
+- SIWE (Sign-In With Ethereum) implementation
+- OAuth integrations (coming soon)
+- Persistent session management
+
+### Programs
+- **Token Explorer**: Real-time token holder analytics with detailed metrics including:  
+- **File Browser**: Navigate and view system files
+- **System Logs (coming soon)**: Real-time system event monitoring with:
+- **Terminal**: Interactive command-line interface
+- **Settings (coming soon)**: System configuration interface with
+- **Music Player**: Retro-style MOD music player
+- **RPG Adventure**: Built-in game featuring Classic MultiplayerRPG gameplay
+
+### Sound System
+The interface features a comprehensive retro-styled sound system including:
+
+- **Keyboard Sounds**: Authentic mechanical keyboard feedback with:
+  - Unique sounds for Space, Enter, and Backspace
+  - Randomized key press variations
+  - Press and release sound pairs
   
-- **Retro Desktop Interface**: Experience a classic desktop environment complete with a taskbar, start menu, and draggable windows.
+- **System Sounds**:
+  - Window open/close mechanical effects
+  - HDD access with head movement sounds
+  - CRT monitor effects and glitches
+  - Menu interaction feedback
+  - Startup/shutdown sequences
+  - Login and Logout melodies
 
-- **Interactive Programs**: Explore various built-in programs such as:
-  - **Token Explorer**: Search and view token holders and balances.
-  - **Settings**: Manage your connected accounts and system preferences.
-  - **Terminal**: Execute commands and interact with the system in a command-line interface.
+All system sounds are synthesized in real-time using the Web Audio API for authentic retro computing feel.
 
-- **Sound Effects**: Enjoy authentic sound effects that enhance the retro experience, including keyboard clicks and system startup sounds.
+## Technical Stack
 
-- **Real-Time Updates**: Stay connected with real-time updates via WebSockets, ensuring your session and data are always current.
-
-- **Responsive Design**: The application is designed to be responsive, adapting to different screen sizes while maintaining its retro charm.
-
-## Technologies Used
-
-- **React & TypeScript**: The application is built with React for a dynamic UI and TypeScript for type safety.
-- **Jotai**: State management is handled using Jotai atoms for efficient and scalable state handling.
-- **Wagmi**: Utilized for wallet integration and Ethereum interactions.
-- **Tailwind CSS**: Provides a flexible and modern approach to styling, ensuring a consistent look and feel.
+- React
+- TypeScript
+- Tailwind CSS
+- Jotai (State Management)
+- Web3 Integration (wagmi)
+- WebSocket for Real-time Updates
 
 ## Getting Started
 
-To run the Onchain Computer locally, follow these steps:
+1. Install dependencies:
+```bash
+bun i
+```
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/yourusername/onchain-computer.git
-   cd onchain-computer
-   ```
+2. Start the development server:
+```bash
+bun dev
+```
 
-2. **Install Dependencies**:
-   ```bash
-   bun install
-   ```
-
-3. **Start the Development Server**:
-   ```bash
-   bun dev
-   ```
-
-4. **Access the Application**:
-   Open your browser and navigate to `http://localhost:5173` to explore the Onchain Computer.
+3. Build for production:
+```bash
+bun build
+```
 
 ## Contributing
 
-We welcome contributions! If you have ideas for new features or improvements, feel free to open an issue or submit a pull request.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 

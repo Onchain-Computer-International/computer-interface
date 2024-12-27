@@ -13,7 +13,7 @@ const LoadingScreen: React.FC = () => {
 
     const bootSequence = [
       "Kickstart 1.3 37.175",
-      "CPU: Motorola 68000 @ 7.16MHz",
+      "CPU: Base 69000 @ 7.16MHz",
       "Memory Test: 512KB Chip RAM, 512KB Fast RAM",
       "[    0.000000] OnchainOS 1.1",
       "[    0.041353] Workbench loading...",
