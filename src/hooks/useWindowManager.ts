@@ -41,8 +41,8 @@ export function useWindowManager() {
   const [openPrograms, setOpenPrograms] = useAtom(openProgramsAtom);
 
   const initializeWindow = (id: string) => {
-    const randomX = Math.floor(Math.random() * 101) + 100; // Random number between 100-200
-    const randomY = Math.floor(Math.random() * 101) + 100; // Random number between 100-200
+    const randomX = Math.floor(Math.random() * 101) + 10; // Random number between 100-200
+    const randomY = Math.floor(Math.random() * 101) + 10; // Random number between 100-200
     
     setWindowStates(prev => ({
       ...prev,
@@ -52,7 +52,7 @@ export function useWindowManager() {
         isMaximized: false,
         zIndex: topZIndex + 1,
         position: { x: randomX, y: randomY },
-        size: { width: 400, height: 300 }
+        size: { width: 600, height: 450 }
       }
     }));
     setTopZIndex(prev => prev + 1);
